@@ -16,28 +16,44 @@ command -v "$PY" >/dev/null || {
   exit 1
 }
 
-if [ ! -x .venv/bin/python ]; then
-  # 上次创建失败会留下残缺目录, 先清掉
+apt_hint() {
+  PYVER=$("$PY" -c 'import sys; print(f"{sys.version_info[0]}.{sys.version_info[1]}")')
+  echo
+  echo "$1"
+  echo "请先安装对应软件包, 然后重新运行本脚本:"
+  echo
+  echo "  sudo apt install python3-venv python3.${PYVER}-venv"
+  echo
+  exit 1
+}
+
+# venv 必须同时具备 python 和 pip, 且 python 确实运行在虚拟环境内才算可用
+# (venv 创建中途失败时 .venv/bin/python 会残留; 若它只是系统 python 的软链,
+#  系统 pip 会被误认为可用, 所以还要校验 sys.prefix)
+venv_usable() {
+  [ -x .venv/bin/python ] || return 1
+  [ -x .venv/bin/pip ] || return 1
+  .venv/bin/python -c 'import sys; raise SystemExit(0 if sys.prefix != sys.base_prefix else 1)' 2>/dev/null
+}
+
+if ! venv_usable; then
   rm -rf .venv
   echo "创建虚拟环境 .venv (基于 $("$PY" -V 2>&1)) ..."
   if ! "$PY" -m venv .venv; then
     rm -rf .venv
-    PYVER=$("$PY" -c 'import sys; print(f"{sys.version_info[0]}.{sys.version_info[1]}")')
-    echo
-    echo "创建失败: 系统缺少 venv/ensurepip 模块。"
-    echo "请先安装对应软件包, 然后重新运行本脚本:"
-    echo
-    echo "  sudo apt install python3-venv python3.${PYVER}-venv"
-    echo
-    exit 1
+    apt_hint "创建失败: 系统缺少 venv/ensurepip 模块。"
+  fi
+  if ! venv_usable; then
+    rm -rf .venv
+    apt_hint "虚拟环境缺少 pip: 系统未提供 ensurepip 支持。"
   fi
 else
-  echo "已存在 .venv, 直接更新依赖"
+  echo "已存在可用 .venv, 直接更新依赖"
 fi
 
 echo "安装依赖 (mujoco / numpy / paramiko / pyinstaller) ..."
-.venv/bin/pip install -q --upgrade pip
-.venv/bin/pip install -q mujoco numpy paramiko pyinstaller
+.venv/bin/python -m pip install -q --upgrade pip
+.venv/bin/python -m pip install -q mujoco numpy paramiko pyinstaller
 
 echo
 .venv/bin/python - <<'EOF'
