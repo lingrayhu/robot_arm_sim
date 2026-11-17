@@ -16,9 +16,21 @@ command -v "$PY" >/dev/null || {
   exit 1
 }
 
-if [ ! -d .venv ]; then
+if [ ! -x .venv/bin/python ]; then
+  # 上次创建失败会留下残缺目录, 先清掉
+  rm -rf .venv
   echo "创建虚拟环境 .venv (基于 $("$PY" -V 2>&1)) ..."
-  "$PY" -m venv .venv
+  if ! "$PY" -m venv .venv; then
+    rm -rf .venv
+    PYVER=$("$PY" -c 'import sys; print(f"{sys.version_info[0]}.{sys.version_info[1]}")')
+    echo
+    echo "创建失败: 系统缺少 venv/ensurepip 模块。"
+    echo "请先安装对应软件包, 然后重新运行本脚本:"
+    echo
+    echo "  sudo apt install python3-venv python3.${PYVER}-venv"
+    echo
+    exit 1
+  fi
 else
   echo "已存在 .venv, 直接更新依赖"
 fi

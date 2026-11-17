@@ -43,11 +43,15 @@ cd dist/rm65_twin
 .venv/bin/python rm65_twin.py       # 数字孪生
 ```
 
-如果提示缺少 venv 模块：
+如果提示缺少 venv 模块（`ensurepip is not available`），按当前 Python 版本安装对应包后重跑：
 
 ```bash
-sudo apt install python3 python3-venv
+python3 -V                              # 例如 Python 3.10.12
+sudo apt install python3-venv python3.10-venv
+rm -rf .venv && ./setup_env.sh
 ```
+
+`setup_env.sh` 创建失败时会自动清理残留的 `.venv`，避免下次跳过创建。
 
 ## 配置文件
 
