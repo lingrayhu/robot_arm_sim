@@ -1,0 +1,7 @@
+# 本地虚拟环境(可重建, 含绝对路径软链)
+.venv/
+# PyInstaller 中间产物
+build/
+# Python 缓存
+__pycache__/
+*.pyc

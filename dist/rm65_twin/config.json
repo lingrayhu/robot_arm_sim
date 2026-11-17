@@ -1,0 +1,9 @@
+{
+  "host": "219.216.72.60",
+  "port": 2222,
+  "user": "jy",
+  "password": "123",
+  "remote_python": "/home/jy/miniconda3/envs/aloha2/bin/python",
+  "sign": "1,1,1,1,1,1",
+  "offset": "0,0,0,0,0,0"
+}

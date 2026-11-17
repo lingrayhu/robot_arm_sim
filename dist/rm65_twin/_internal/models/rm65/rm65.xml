@@ -1,0 +1,139 @@
+<mujoco model="RM65-B + EG2-4C2 gripper">
+  <compiler angle="radian" meshdir="assets" autolimits="true"/>
+  <option timestep="0.002" integrator="implicitfast" cone="elliptic"/>
+  <visual>
+    <global offwidth="1280" offheight="960"/>
+    <quality shadowsize="4096"/>
+  </visual>
+  <default>
+    <joint type="hinge" damping="0.5" armature="0.01" frictionloss="0.1"/>
+    <default class="gripper_joint">
+      <joint damping="0.05" armature="0.0002" frictionloss="0.001"/>
+    </default>
+    <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.85 0.85 0.87 1"/>
+    <default class="collision">
+      <geom contype="1" conaffinity="0" group="3" rgba="0.3 0.35 0.42 0.35"/>
+    </default>
+  </default>
+  <asset>
+    <mesh name="4C2_Link1" file="4C2_Link1.STL"/>
+    <mesh name="4C2_Link2" file="4C2_Link2.STL"/>
+    <mesh name="4C2_Link3" file="4C2_Link3.STL"/>
+    <mesh name="4C2_Link4" file="4C2_Link4.STL"/>
+    <mesh name="4C2_Link5" file="4C2_Link5.STL"/>
+    <mesh name="4C2_Link6" file="4C2_Link6.STL"/>
+    <mesh name="4C2_baselink" file="4C2_baselink.STL"/>
+    <mesh name="base_link" file="base_link.STL"/>
+    <mesh name="link_1" file="link_1.STL"/>
+    <mesh name="link_2" file="link_2.STL"/>
+    <mesh name="link_3" file="link_3.STL"/>
+    <mesh name="link_4" file="link_4.STL"/>
+    <mesh name="link_5" file="link_5.STL"/>
+    <mesh name="link_6" file="link_6.STL"/>
+  </asset>
+  <worldbody>
+    <body name="base_link" pos="0 0 0" quat="1 0 0 0">
+      <inertial pos="-0.00049987 -5.2709e-05 0.060019" mass="1.862" fullinertia="0.0017232 0.0017051 0.00090158 -3.1058e-06 3.7924e-05 -1.3691e-06"/>
+      <geom mesh="base_link" pos="0 0 0" quat="1 0 0 0"/>
+      <geom class="collision" mesh="base_link" pos="0 0 0" quat="1 0 0 0"/>
+      <body name="link_1" pos="0 0 0.2405" quat="1 0 0 0">
+        <joint name="joint_1" axis="0 0 1" range="-3.106 3.106"/>
+        <inertial pos="0.000941 0.007803 -0.10744" mass="1.51" fullinertia="0.002662223 0.002331685 0.001663712 -2.6849e-05 -1.3775e-05 -7.8667e-05"/>
+        <geom mesh="link_1" pos="0 0 0" quat="1 0 0 0"/>
+        <geom class="collision" mesh="link_1" pos="0 0 0" quat="1 0 0 0"/>
+        <body name="link_2" pos="0 0 0" quat="0.4999981634 0.5 -0.5 0.5000018366">
+          <joint name="joint_2" axis="0 0 1" range="-2.2689 2.2689"/>
+          <inertial pos="0.183722 0.000103 -0.001665" mass="1.653" fullinertia="0.001706953 0.014713776 0.014239805 -6.995e-06 0.001809254 6.223e-06"/>
+          <geom mesh="link_2" pos="0 0 0" quat="1 0 0 0"/>
+          <geom class="collision" mesh="link_2" pos="0 0 0" quat="1 0 0 0"/>
+          <body name="link_3" pos="0.256 0 0" quat="0.7071054825 0 0 0.7071080799">
+            <joint name="joint_3" axis="0 0 1" range="-2.356 2.356"/>
+            <inertial pos="2.9e-05 -0.090105 0.004039" mass="0.726" fullinertia="0.001350874 0.000360021 0.001331598 1.069e-06 -2.28e-07 -0.000219904"/>
+            <geom mesh="link_3" pos="0 0 0" quat="1 0 0 0"/>
+            <geom class="collision" mesh="link_3" pos="0 0 0" quat="1 0 0 0"/>
+            <body name="link_4" pos="0 -0.21 0" quat="0.7071054825 0.7071080799 0 0">
+              <joint name="joint_4" axis="0 0 1" range="-3.106 3.106"/>
+              <inertial pos="7e-06 -0.009486 -0.008041" mass="0.671" fullinertia="0.000690221 0.000552834 0.000425835 -8.65e-07 -6.92e-07 1.6411e-05"/>
+              <geom mesh="link_4" pos="0 0 0" quat="1 0 0 0"/>
+              <geom class="collision" mesh="link_4" pos="0 0 0" quat="1 0 0 0"/>
+              <body name="link_5" pos="0 0 0" quat="0.7071054825 -0.7071080799 0 0">
+                <joint name="joint_5" axis="0 0 1" range="-2.234 2.234"/>
+                <inertial pos="3.2e-05 -0.083769 0.002326" mass="0.647" fullinertia="0.000834052 0.000281767 0.000821714 9.52e-07 -2.57e-07 -0.00011175"/>
+                <geom mesh="link_5" pos="0 0 0" quat="1 0 0 0"/>
+                <geom class="collision" mesh="link_5" pos="0 0 0" quat="1 0 0 0"/>
+                <body name="link_6" pos="0 -0.144 0" quat="0.7071054825 0.7071080799 0 0">
+                  <joint name="joint_6" axis="0 0 1" range="-6.28 6.28"/>
+                  <inertial pos="-0.000569 0.00029 -0.010569" mass="0.104" fullinertia="3.043e-05 3.604e-05 5.52e-05 2.622e-09 2.199e-08 1.195e-08"/>
+                  <geom mesh="link_6" pos="0 0 0" quat="1 0 0 0"/>
+                  <geom class="collision" mesh="link_6" pos="0 0 0" quat="1 0 0 0"/>
+                  <site name="flange_site" pos="0 0 0" size="0.004" rgba="1 0 0 1"/>
+                  <body name="4C2_baselink" pos="0 0 0" quat="1 0 0 0">
+                    <inertial pos="1.5645e-05 -4.1838e-06 0.038" mass="0.072633" fullinertia="5.095e-05 6.0883e-05 1.933e-05 -7.3167e-13 2.0229e-08 -4.5583e-09"/>
+                    <geom mesh="4C2_baselink" pos="0 0 0" quat="1 0 0 0" rgba="0.75294 0.75294 0.75294 1"/>
+                    <geom class="collision" mesh="4C2_baselink" pos="0 0 0" quat="1 0 0 0"/>
+                    <site name="ee_site" pos="0 -0.009 0.14" size="0.004" rgba="0 1 0 1"/>
+                    <body name="4C2_Link1" pos="-0.04 -0.009 0.079" quat="1 0 0 0">
+                      <joint name="4C2_Joint1" axis="0 -1 0" range="0 0.82" class="gripper_joint"/>
+                      <inertial pos="0.0087669 0.009 0.013992" mass="0.0024292" fullinertia="5.1061e-07 5.7398e-07 2.6747e-07 -8.6739e-19 -2.508e-07 -1.3667e-18"/>
+                      <geom mesh="4C2_Link1" pos="0 0 0" quat="1 0 0 0" rgba="0.75294 0.75294 0.75294 1"/>
+                      <geom class="collision" mesh="4C2_Link1" pos="0 0 0" quat="1 0 0 0"/>
+                      <body name="4C2_Link5" pos="0.0223 0.003 0.035591" quat="1 0 0 0">
+                        <joint name="4C2_Joint5" axis="0 1 0" range="0 0.82" class="gripper_joint"/>
+                        <inertial pos="0.011864 0.006 0.011367" mass="0.0045068" fullinertia="5.1288e-07 5.3203e-07 2.009e-07 -9.8137e-14 -9.4703e-08 -6.212e-14"/>
+                        <geom mesh="4C2_Link5" pos="0 0 0" quat="1 0 0 0" rgba="0.75294 0.75294 0.75294 1"/>
+                        <geom class="collision" mesh="4C2_Link5" pos="0 0 0" quat="1 0 0 0"/>
+                      </body>
+                    </body>
+                    <body name="4C2_Link2" pos="-0.03 -0.009 0.081" quat="1 0 0 0">
+                      <joint name="4C2_Joint2" axis="0 -1 0" range="0 0.82" class="gripper_joint"/>
+                      <inertial pos="0.0087435 0.009 0.013955" mass="0.0038971" fullinertia="5.6941e-07 6.2305e-07 3.0871e-07 -1.0711e-18 -2.6891e-07 -1.6845e-18"/>
+                      <geom mesh="4C2_Link2" pos="0 0 0" quat="1 0 0 0" rgba="0.75294 0.75294 0.75294 1"/>
+                      <geom class="collision" mesh="4C2_Link2" pos="0 0 0" quat="1 0 0 0"/>
+                    </body>
+                    <body name="4C2_Link3" pos="0.03 -0.009 0.081" quat="1 0 0 0">
+                      <joint name="4C2_Joint3" axis="0 -1 0" range="-0.82 0" class="gripper_joint"/>
+                      <inertial pos="-0.0087435 0.009 0.013955" mass="0.0038971" fullinertia="5.6941e-07 6.2305e-07 3.0871e-07 1.0666e-18 2.6891e-07 -1.8084e-18"/>
+                      <geom mesh="4C2_Link3" pos="0 0 0" quat="1 0 0 0" rgba="0.75294 0.75294 0.75294 1"/>
+                      <geom class="collision" mesh="4C2_Link3" pos="0 0 0" quat="1 0 0 0"/>
+                    </body>
+                    <body name="4C2_Link4" pos="0.04 -0.009 0.079" quat="1 0 0 0">
+                      <joint name="4C2_Joint4" axis="0 -1 0" range="-0.82 0" class="gripper_joint"/>
+                      <inertial pos="-0.0087669 0.009 0.013992" mass="0.0024292" fullinertia="5.1061e-07 5.7398e-07 2.6747e-07 -9.5279e-19 2.508e-07 7.6863e-19"/>
+                      <geom mesh="4C2_Link4" pos="0 0 0" quat="1 0 0 0" rgba="0.75294 0.75294 0.75294 1"/>
+                      <geom class="collision" mesh="4C2_Link4" pos="0 0 0" quat="1 0 0 0"/>
+                      <body name="4C2_Link6" pos="-0.0223 0.003 0.035591" quat="1 0 0 0">
+                        <joint name="4C2_Joint6" axis="0 -1 0" range="0 0.82" class="gripper_joint"/>
+                        <inertial pos="-0.011864 0.006 0.011367" mass="0.0045068" fullinertia="5.1288e-07 5.3203e-07 2.009e-07 -9.8137e-14 9.4703e-08 6.2119e-14"/>
+                        <geom mesh="4C2_Link6" pos="0 0 0" quat="1 0 0 0" rgba="0.75294 0.75294 0.75294 1"/>
+                        <geom class="collision" mesh="4C2_Link6" pos="0 0 0" quat="1 0 0 0"/>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <position name="act_joint_1" joint="joint_1" kp="400" kv="25" ctrlrange="-3.106 3.106" forcerange="-60 60"/>
+    <position name="act_joint_2" joint="joint_2" kp="400" kv="25" ctrlrange="-2.2689 2.2689" forcerange="-60 60"/>
+    <position name="act_joint_3" joint="joint_3" kp="250" kv="18" ctrlrange="-2.356 2.356" forcerange="-30 30"/>
+    <position name="act_joint_4" joint="joint_4" kp="80" kv="8" ctrlrange="-3.106 3.106" forcerange="-10 10"/>
+    <position name="act_joint_5" joint="joint_5" kp="80" kv="8" ctrlrange="-2.234 2.234" forcerange="-10 10"/>
+    <position name="act_joint_6" joint="joint_6" kp="60" kv="5" ctrlrange="-6.28 6.28" forcerange="-10 10"/>
+    <position name="act_4C2_Joint1" joint="4C2_Joint1" kp="1.0" kv="0.1" ctrlrange="0 0.82" forcerange="-1 1"/>
+    <position name="act_4C2_Joint4" joint="4C2_Joint4" kp="1.0" kv="0.1" ctrlrange="-0.82 0" forcerange="-1 1"/>
+  </actuator>
+  <equality>
+    <joint joint1="4C2_Joint5" joint2="4C2_Joint1" polycoef="0 1 0 0 0"/>
+    <joint joint1="4C2_Joint2" joint2="4C2_Joint1" polycoef="0 1 0 0 0"/>
+    <joint joint1="4C2_Joint6" joint2="4C2_Joint4" polycoef="0 -1 0 0 0"/>
+    <joint joint1="4C2_Joint3" joint2="4C2_Joint4" polycoef="0 1 0 0 0"/>
+  </equality>
+  <keyframe>
+    <key name="home" qpos="0 0 0 0 0 0 0 0 0 0 0 0" ctrl="0 0 0 0 0 0 0 0"/>
+  </keyframe>
+</mujoco>
