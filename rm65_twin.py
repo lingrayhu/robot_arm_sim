@@ -48,6 +48,7 @@ DEFAULT_CONFIG = {
     "remote_python": "/home/jy/miniconda3/envs/aloha2/bin/python",
     "sign": "1,1,1,1,1,1",
     "offset": "0,0,0,0,0,0",
+    "ee_rot": 0.0,
 }
 
 ARM_JOINTS = [f"joint_{i}" for i in range(1, 7)]
@@ -170,8 +171,10 @@ def build_joint_maps(model):
     return arm_adr, finger_max, gripper
 
 
-def apply_pose(model, data, arm_adr, finger_max, gripper, q_deg, grip_raw, sign, offset_deg):
-    q_rad = np.deg2rad(sign * np.asarray(q_deg) + offset_deg)
+def apply_pose(model, data, arm_adr, finger_max, gripper, q_deg, grip_raw, sign, offset_deg, ee_rot=0.0):
+    q_target = sign * np.asarray(q_deg) + offset_deg
+    q_target[5] += ee_rot  # 末端执行器绕工具轴的额外旋转(度)
+    q_rad = np.deg2rad(q_target)
     lo = model.jnt_range[[model.joint(n).id for n in ARM_JOINTS], 0]
     hi = model.jnt_range[[model.joint(n).id for n in ARM_JOINTS], 1]
     data.qpos[arm_adr] = np.clip(q_rad, lo, hi)
@@ -202,6 +205,8 @@ def main():
     parser.add_argument("--remote-python", default=cfg["remote_python"])
     parser.add_argument("--sign", default=cfg["sign"], help="6 轴方向系数, 逗号分隔")
     parser.add_argument("--offset", default=cfg["offset"], help="6 轴零位补偿(度), 逗号分隔")
+    parser.add_argument("--ee-rot", type=float, default=float(cfg.get("ee_rot", 0.0)),
+                        help="末端执行器绕工具轴额外旋转(度), 用于修正夹爪朝向偏差")
     parser.add_argument("--no-viewer", action="store_true", help="不开窗口, 仅打印")
     parser.add_argument("-d", "--duration", type=float, default=0.0, help="运行秒数, 0=一直运行")
     args = parser.parse_args()
@@ -227,6 +232,8 @@ def main():
         stream.stop()
         return 1
     print("主臂数据已就绪:", np.round(stream.snapshot()[0], 3))
+    if args.ee_rot:
+        print(f"末端执行器附加旋转: {args.ee_rot:+.1f} 度")
 
     start = time.time()
     last_print = start
@@ -236,7 +243,7 @@ def main():
         while True:
             q, g, _ = stream.snapshot()
             if q is not None:
-                apply_pose(model, data, arm_adr, finger_max, gripper, q, g, sign, offset_deg)
+                apply_pose(model, data, arm_adr, finger_max, gripper, q, g, sign, offset_deg, args.ee_rot)
                 mujoco.mj_forward(model, data)
             now = time.time()
             if now - last_print >= 1.0:
@@ -253,7 +260,7 @@ def main():
             while viewer.is_running():
                 q, g, _ = stream.snapshot()
                 if q is not None:
-                    apply_pose(model, data, arm_adr, finger_max, gripper, q, g, sign, offset_deg)
+                    apply_pose(model, data, arm_adr, finger_max, gripper, q, g, sign, offset_deg, args.ee_rot)
                     mujoco.mj_forward(model, data)
                 viewer.sync()
                 now = time.time()
